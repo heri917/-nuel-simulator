@@ -1,0 +1,11 @@
+{
+  "name": "NUEL Simulator",
+  "short_name": "NUEL",
+  "description": "3D Mining Hauling Simulator",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#101713",
+  "theme_color": "#101713",
+  "icons": []
+}
