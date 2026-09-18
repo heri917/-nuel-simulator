@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#101713">
+
+  <title>NUEL Simulator</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-user-select:none;
+      user-select:none;
+      touch-action:none;
+    }
+
+    html,body{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      background:#101713;
+      font-family:Arial,sans-serif;
+    }
+
+    #game{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+    }
+
+    canvas{
+      display:block;
+      width:100%;
+      height:100%;
+    }
+
+    #loading{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      background:#101713;
+      color:white;
+    }
+
+    #loading h1{
+      font-size:clamp(30px,7vw,64px);
+      letter-spacing:4px;
+    }
+
+    #loading p{
+      margin-top:10px;
+      color:#e7b52e;
+      letter-spacing:3px;
+      font-size:12px;
+    }
+
+    #hud{
+      position:fixed;
+      inset:0;
+      z-index:10;
+      pointer-events:none;
+      color:white;
+    }
+
+    #title{
+      position:absolute;
+      top:max(14px,env(safe-area-inset-top));
+      left:max(18px,env(safe-area-inset-left));
+      font-weight:900;
+      font-size:20px;
+      letter-spacing:2px;
+    }
+
+    #unit{
+      position:absolute;
+      top:48px;
+      left:max(18px,env(safe-area-inset-left));
+      font-size:12px;
+      opacity:.85;
+      line-height:1.5;
+    }
+
+    #speed{
+      position:absolute;
+      bottom:max(20px,env(safe-area-inset-bottom));
+      left:50%;
+      transform:translateX(-50%);
+      text-align:center;
+      font-size:38px;
+      font-weight:900;
+      text-shadow:0 2px 6px #000;
+    }
+
+    #speed small{
+      display:block;
+      font-size:11px;
+      letter-spacing:2px;
+    }
+
+    .control{
+      position:absolute;
+      pointer-events:auto;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(10,15,12,.58);
+      color:white;
+      backdrop-filter:blur(5px);
+      -webkit-backdrop-filter:blur(5px);
+      font-weight:bold;
+    }
+
+    #left{
+      left:max(18px,env(safe-area-inset-left));
+      bottom:max(24px,env(safe-area-inset-bottom));
+      width:68px;
+      height:68px;
+      border-radius:50%;
+    }
+
+    #right{
+      left:max(96px,calc(env(safe-area-inset-left) + 96px));
+      bottom:max(24px,env(safe-area-inset-bottom));
+      width:68px;
+      height:68px;
+      border-radius:50%;
+    }
+
+    #gas{
+      right:max(18px,env(safe-area-inset-right));
+      bottom:max(24px,env(safe-area-inset-bottom));
+      width:82px;
+      height:105px;
+      border-radius:22px;
+    }
+
+    #brake{
+      right:max(112px,calc(env(safe-area-inset-right) + 112px));
+      bottom:max(24px,env(safe-area-inset-bottom));
+      width:72px;
+      height:78px;
+      border-radius:20px;
+    }
+
+    #dump{
+      right:max(18px,env(safe-area-inset-right));
+      bottom:145px;
+      width:82px;
+      height:52px;
+      border-radius:15px;
+    }
+
+    #cameraHint{
+      position:absolute;
+      top:max(18px,env(safe-area-inset-top));
+      right:max(18px,env(safe-area-inset-right));
+      font-size:11px;
+      opacity:.7;
+    }
+
+    @media (orientation:portrait){
+      #rotate{
+        display:flex;
+      }
+    }
+
+    @media (orientation:landscape){
+      #rotate{
+        display:none;
+      }
+    }
+
+    #rotate{
+      position:fixed;
+      inset:0;
+      z-index:200;
+      background:#101713;
+      color:white;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:30px;
+      font-weight:bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="game"></div>
+
+<div id="loading">
+  <h1>NUEL SIMULATOR</h1>
+  <p>HAULING • WORK • IMPROVE</p>
+</div>
+
+<div id="hud">
+
+  <div id="title">NUEL SIMULATOR</div>
+
+  <div id="unit">
+    DT030-0204<br>
+    VOLVO FMX 440 • 8×4
+  </div>
+
+  <div id="cameraHint">
+    DRAG LAYAR • KAMERA 360°
+  </div>
+
+  <div id="speed">
+    <span id="speedValue">0</span>
+    <small>KM/H</small>
+  </div>
+
+  <button id="left" class="control">◀</button>
+  <button id="right" class="control">▶</button>
+
+  <button id="brake" class="control">
+    BRAKE
+  </button>
+
+  <button id="gas" class="control">
+    ACCEL
+  </button>
+
+  <button id="dump" class="control">
+    DUMP
+  </button>
+
+</div>
+
+<div id="rotate">
+  Putar iPhone ke posisi landscape 🚚
+</div>
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module" src="./app.js"></script>
+
+</body>
+</html>
