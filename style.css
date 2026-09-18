@@ -1,0 +1,183 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #101713;
+  font-family: Arial, sans-serif;
+  color: white;
+  touch-action: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #101713;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#topbar {
+  position: absolute;
+  top: env(safe-area-inset-top, 10px);
+  left: 12px;
+  right: 12px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(8, 10, 9, 0.72);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+}
+
+#title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+#unit {
+  font-size: 11px;
+  opacity: 0.75;
+  text-align: right;
+  line-height: 1.4;
+}
+
+#controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.control {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(10,12,11,0.68);
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  pointer-events: auto;
+  user-select: none;
+  touch-action: none;
+  backdrop-filter: blur(6px);
+}
+
+.control:active {
+  transform: scale(0.92);
+  background: rgba(255,255,255,0.18);
+}
+
+#left {
+  left: 20px;
+  bottom: 28px;
+}
+
+#right {
+  left: 98px;
+  bottom: 28px;
+}
+
+#brake {
+  right: 98px;
+  bottom: 28px;
+}
+
+#gas {
+  right: 20px;
+  bottom: 28px;
+  width: 78px;
+  height: 78px;
+  background: rgba(42, 92, 54, 0.75);
+}
+
+#dump {
+  right: 24px;
+  bottom: 120px;
+  width: 64px;
+  height: 64px;
+  font-size: 12px;
+  background: rgba(100, 75, 25, 0.78);
+}
+
+#status {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.58);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+#orientation {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #101713;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+
+#orientation div {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+@media (orientation: portrait) {
+  #orientation {
+    display: flex;
+  }
+}
+
+@media (max-width: 500px) {
+  #topbar {
+    height: 52px;
+  }
+
+  #title {
+    font-size: 15px;
+  }
+
+  #unit {
+    font-size: 9px;
+  }
+}
